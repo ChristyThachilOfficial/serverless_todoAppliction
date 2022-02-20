@@ -1,0 +1,59 @@
+service: ToDo
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  
+# custom:
+#   dynamodb:
+#   stages:
+#     - test
+#   start:
+#     port: 8000
+#     inMemory: true
+#     heapInitial: 200m
+#     heapMax: 1g
+#     migrate: true
+#     seed: true
+#     convertEmptyValues: true
+
+functions:
+  create:
+    handler: handler.create
+    events:
+      - httpApi: 'POST /create'
+  delete:
+    handler: handler.delete
+    events:
+      - httpApi: 'DELETE /delete/{todoId}'
+  read:
+    handler: handler.read
+    events:
+      - httpApi: 'GET /read'
+  update:
+    handler: handler.update
+    events:
+      - httpApi: 'PATCH /update'
+
+
+
+# resources: 
+#       Resources:
+#         newTodoTable:
+#           Type: AWS::DynamoDB::Table
+#           Properties:
+#             TableName: newTodoTable
+#             AttributeDefinitions:
+#               - AttributeName: id
+#                 AttributeType: S
+#             KeySchema:
+#               - AttributeName: id
+#                 KeyType: HASH
+#             ProvisionedThroughput:
+#               ReadCapacityUnits: 1
+#               WriteCapacityUnits: 1
+
+plugins:
+  - serverless-offline
